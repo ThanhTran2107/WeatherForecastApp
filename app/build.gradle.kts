@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    id("com.google.gms.google-services") version "4.4.2" apply false
 }
 
 android {
@@ -32,6 +33,7 @@ android {
 }
 
 dependencies {
+    implementation("com.google.android.gms:play-services-location:21.3.0")
 
     implementation(libs.appcompat)
     implementation(libs.material)
