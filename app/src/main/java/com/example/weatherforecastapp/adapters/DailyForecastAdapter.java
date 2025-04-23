@@ -1,4 +1,8 @@
 package com.example.weatherforecastapp.adapters;
 
-public class DailyForecastAdapter {
+
+
+public class DailyForecastAdapter  {
+
+
 }
