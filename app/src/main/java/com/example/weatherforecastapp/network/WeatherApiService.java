@@ -1,8 +1,8 @@
 package com.example.weatherforecastapp.network;
 
 import com.example.weatherforecastapp.models.CurrentWeather;
-import com.example.weatherforecastapp.models.DailyForecast;
-import com.example.weatherforecastapp.models.HourlyForecast;
+import com.example.weatherforecastapp.models.ForecastResponse;
+
 
 import java.util.List;
 
@@ -17,12 +17,11 @@ public interface WeatherApiService {
                                            @Query("appid") String apiKey,
                                            @Query("units") String units);
 
-    @GET("forecast/hourly")
-    Call<List<HourlyForecast>> getHourlyForecast(@Query("lat") double lat, @Query("lon") double lon,
-                                                 @Query("appid") String apiKey);
-
-    @GET("forecast/daily")
-    Call<List<DailyForecast>> getDailyForecast(@Query("lat") double lat, @Query("lon") double lon,
-                                               @Query("appid") String apiKey);
-
+    @GET("forecast")
+    Call<ForecastResponse> getHourlyForecast(
+            @Query("lat") double lat,
+            @Query("lon") double lon,
+            @Query("appid") String apiKey,
+            @Query("units") String units
+    );
 }

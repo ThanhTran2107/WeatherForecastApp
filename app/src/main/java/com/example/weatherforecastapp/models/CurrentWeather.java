@@ -7,7 +7,7 @@ public class CurrentWeather {
     public List<Weather> weather;
 
     public static class Main {
-        public float temp;
+        public double temp;
         public int humidity;
     }
 
