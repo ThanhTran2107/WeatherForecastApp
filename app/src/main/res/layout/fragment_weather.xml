@@ -2,28 +2,67 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
 
-    <TextView android:id="@+id/locationTextView"
+    android:gravity="center"
+    android:layout_marginTop="20dp">
+
+
+    <!-- Location Text -->
+    <TextView
+        android:id="@+id/locationTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Location" />
+        android:text="Location"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="10dp"/>
+    <!--    image view-->
+    <ImageView
+        android:id="@+id/weatherIcon"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_sun"
+        android:layout_marginBottom="16dp"/>
 
-    <TextView android:id="@+id/temperatureTextView"
+    <!-- Temperature Text -->
+    <TextView
+        android:id="@+id/temperatureTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Temperature" />
+        android:text="Temperature"
+        android:textSize="24sp"
+        android:textColor="@android:color/holo_blue_dark"
+        android:layout_marginBottom="10dp"
+        android:layout_gravity="center"/>
 
-    <TextView android:id="@+id/humidityTextView"
+    <TextView
+        android:id="@+id/fahrenheitTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Humidity" />
-
-    <TextView android:id="@+id/conditionTextView"
+        android:text="fahrenheit"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="10dp"/>
+    <!-- Humidity Text -->
+    <TextView
+        android:id="@+id/humidityTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Condition" />
+        android:text="Humidity"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="10dp"/>
 
-
+    <!-- Condition Text -->
+    <TextView
+        android:id="@+id/conditionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Condition"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="20dp"/>
 
 </LinearLayout>

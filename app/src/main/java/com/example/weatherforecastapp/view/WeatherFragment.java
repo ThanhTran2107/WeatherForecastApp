@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.ImageView;
+
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.weatherforecastapp.R;
 import com.example.weatherforecastapp.models.LocationInfo;
 import com.example.weatherforecastapp.viewmodel.WeatherViewModel;
+import com.example.weatherforecastapp.utils.UnitConverter;
 
 import java.io.Serializable;
 
@@ -40,6 +43,10 @@ public class WeatherFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_weather, container, false);
 
         // Khởi tạo view
+        ImageView weatherIcon = view.findViewById(R.id.weatherIcon);
+
+        TextView FTextView;
+        FTextView = view.findViewById(R.id.fahrenheitTextView);
         locationTextView = view.findViewById(R.id.locationTextView);
         tempTextView = view.findViewById(R.id.temperatureTextView);
         humidityTextView = view.findViewById(R.id.humidityTextView);
@@ -58,9 +65,26 @@ public class WeatherFragment extends Fragment {
                 // Quan sát thời tiết hiện tại
                 viewModel.getCurrentWeather(lat, lon, API_KEY).observe(getViewLifecycleOwner(), weather -> {
                     if (weather != null) {
+                        // Hiển thị thông tin thời tiết
+                        // Convert temperature from Celsius to Fahrenheit using TemperatureConverter class
+                        double tempCelsius = weather.main.temp;
+                        double tempFahrenheit = UnitConverter.celsiusToFahrenheit(tempCelsius);
+
+                        // Set the temperature, humidity, and condition text
+                        FTextView.setText( String.format("%.1f", tempFahrenheit) + "°F");
                         tempTextView.setText("Temp: " + weather.main.temp + "°C");
                         humidityTextView.setText("Humidity: " + weather.main.humidity + "%");
                         conditionTextView.setText("Condition: " + weather.weather.get(0).description);
+
+                        // Đặt biểu tượng thời tiết dựa trên mô tả
+                        if (weather.weather.get(0).description.contains("rain")) {
+                            weatherIcon.setImageResource(R.drawable.ic_rain);
+                        } else if (weather.weather.get(0).description.contains("sun")) {
+                            weatherIcon.setImageResource(R.drawable.ic_sun);
+                        }
+                        else if (weather.weather.get(0).description.contains("cloud")) {
+                            weatherIcon.setImageResource(R.drawable.ic_cloud);
+                        }
                     }
                 });
             }

@@ -20,5 +20,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:name="com.example.weatherforecastapp.view.WeatherFragment" />
+        android:name="com.example.weatherforecastapp.view.WeatherFragment"
+    android:background="@drawable/bg"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

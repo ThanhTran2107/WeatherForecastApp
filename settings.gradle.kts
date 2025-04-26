@@ -20,4 +20,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "WeatherForecastApp"
-include(":app")
+include(":app", "Applicaton")
