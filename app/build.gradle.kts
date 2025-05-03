@@ -40,6 +40,10 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+
+    implementation(libs.google.play.services.maps)    // Thư viện Google Maps
+    implementation(libs.androidx.work.runtime)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
