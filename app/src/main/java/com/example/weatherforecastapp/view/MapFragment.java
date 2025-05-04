@@ -1,16 +1,19 @@
 package com.example.weatherforecastapp.view;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 // import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -28,6 +31,7 @@ import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
 import com.google.android.gms.maps.model.TileProvider;
 import com.google.android.gms.maps.model.UrlTileProvider;
+import com.google.android.material.button.MaterialButton;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -40,6 +44,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private TileOverlay tempOverlay;
     private TileOverlay rainOverlay;
     private TileOverlay cloudOverlay;
+    // --- Các nút điều khiển ---
+    private Button btnToggleTemp;
+    private Button btnToggleRain;
+    private Button btnToggleCloud;
+    // -----------------------
 
     private static final String TAG = "MapFragment";
     // Tọa độ mặc định ở Việt Nam (ví dụ: Hà Nội)
@@ -47,7 +56,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private static final float DEFAULT_VIETNAM_ZOOM = 6f; // Mức zoom để thấy tổng quan VN
     private static final float USER_LOCATION_ZOOM = 10f; // Mức zoom khi có vị trí người dùng
 
-    private static final float OVERLAY_TRANSPARENCY = 0.1f;
+    private static final float OVERLAY_TRANSPARENCY = 0.0f;
     private static final String OWM_TILE_URL_FORMAT =
             "https://tile.openweathermap.org/map/%s/%d/%d/%d.png?appid=%s";
 
@@ -109,7 +118,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         } else {
             Log.e(TAG, "Back button (btnBack) not found in layout!");
         }
-// ---------------------
+        // --- Ánh xạ và xử lý nút điều khiển Overlay ---
+        btnToggleTemp = view.findViewById(R.id.btnToggleTemp);
+        btnToggleRain = view.findViewById(R.id.btnToggleRain);
+        btnToggleCloud = view.findViewById(R.id.btnToggleCloud);
+
+        if (btnToggleTemp != null) {
+            btnToggleTemp.setOnClickListener(v -> toggleOverlay(tempOverlay, btnToggleTemp));
+        }
+        if (btnToggleRain != null) {
+            btnToggleRain.setOnClickListener(v -> toggleOverlay(rainOverlay, btnToggleRain));
+        }
+        if (btnToggleCloud != null) {
+            btnToggleCloud.setOnClickListener(v -> toggleOverlay(cloudOverlay, btnToggleCloud));
+        }
+        // --------------------------------------------
     }
 
     @Override
@@ -124,6 +147,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         uiSettings.setRotateGesturesEnabled(true); // Cho phép xoay bản đồ
         uiSettings.setCompassEnabled(true); // Hiển thị la bàn khi xoay
         // --------------------------
+
+        // Cập nhật trạng thái ban đầu của các nút điều khiển
+        updateButtonState(tempOverlay, btnToggleTemp);
+        updateButtonState(rainOverlay, btnToggleRain);
+        updateButtonState(cloudOverlay, btnToggleCloud);
         // Kiểm tra xem có thông tin vị trí người dùng không
         if (locationInfo != null) {
             // Có vị trí người dùng -> Hiển thị vị trí đó
@@ -181,7 +209,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     .fadeIn(true)
                     .transparency(OVERLAY_TRANSPARENCY) // *** Đặt độ trong suốt ***
                     .zIndex(2f));
-            rainOverlay.setVisible(true);
+            rainOverlay.setVisible(false);
             Log.d(TAG, "Precipitation overlay added.");
         } else {
             Log.e(TAG, "Failed to create precipitation tile provider.");
@@ -194,13 +222,50 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     .fadeIn(true)
                     .transparency(OVERLAY_TRANSPARENCY) // *** Đặt độ trong suốt ***
                     .zIndex(3f));
-            cloudOverlay.setVisible(true);
+            cloudOverlay.setVisible(false);
             Log.d(TAG, "Cloud overlay added.");
         } else {
             Log.e(TAG, "Failed to create cloud tile provider.");
         }
     }
 
+    // --- Hàm bật/tắt lớp phủ và cập nhật nút ---
+    private void toggleOverlay(TileOverlay overlay, Button button) {
+        if (overlay != null && button != null) {
+            boolean isVisible = !overlay.isVisible(); // Lấy trạng thái mới
+            overlay.setVisible(isVisible); // Đặt trạng thái hiển thị mới
+            updateButtonState(overlay, button); // Cập nhật giao diện nút
+            Log.d(TAG, "Overlay visibility toggled to: " + isVisible);
+        } else {
+            Log.w(TAG, "Cannot toggle overlay or button is null.");
+        }
+    }
+    // -------------------------------------------
+
+    // --- Hàm cập nhật giao diện nút dựa trên trạng thái lớp phủ ---
+    private void updateButtonState(TileOverlay overlay, Button button) {
+        if (overlay != null && button != null && getContext() != null) {
+            boolean isVisible = overlay.isVisible();
+            if (isVisible) {
+                // Nếu đang hiển thị: Đặt màu nền khác (ví dụ: màu accent) và chữ trắng
+                if (button instanceof MaterialButton) { // Kiểm tra nếu là MaterialButton
+                    ((MaterialButton) button).setBackgroundTintList(ContextCompat.getColorStateList(getContext(), R.color.black)); // Ví dụ màu accent
+                } else {
+                    button.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white)); // Cách cũ hơn
+                }
+                button.setTextColor(Color.WHITE);
+            } else {
+                // Nếu đang ẩn: Đặt màu nền mặc định và chữ mặc định
+                if (button instanceof MaterialButton) {
+                    ((MaterialButton) button).setBackgroundTintList(ContextCompat.getColorStateList(getContext(), com.google.android.material.R.color.material_dynamic_primary95)); // Ví dụ màu nhạt hơn
+                } else {
+                    button.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.white));
+                }
+                button.setTextColor(Color.BLACK); // Hoặc màu chữ mặc định của theme
+            }
+        }
+    }
+    // -------------------------------------------------------------
     private TileProvider createTileProvider(final String layer) {
         try {
             TileProvider tileProvider = new UrlTileProvider(256, 256) {
