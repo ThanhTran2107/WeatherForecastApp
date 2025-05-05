@@ -33,7 +33,6 @@ import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 import com.example.weatherforecastapp.models.LocationInfo;
-// import com.example.weatherforecastapp.utils.Constants;
 import com.example.weatherforecastapp.utils.LocationHelper;
 import com.example.weatherforecastapp.utils.WeatherNotificationHelper;
 import com.example.weatherforecastapp.view.ForecastFragment;

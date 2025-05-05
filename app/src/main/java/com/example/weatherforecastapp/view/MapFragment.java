@@ -177,7 +177,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             boolean isVisible = overlay.isVisible();
             // Chỉnh lại màu sắc theo style bạn muốn
             int activeColor = R.color.black; // Màu khi active (ví dụ)
-            int inactiveColor = R.color.black; // Màu khi inactive (ví dụ)
+            int inactiveColor = R.color.white; // Màu khi inactive (ví dụ)
             int activeTextColor = Color.WHITE;
             int inactiveTextColor = Color.BLACK;
 
